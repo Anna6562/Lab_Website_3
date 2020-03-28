@@ -185,6 +185,13 @@ app.post('/home/pick_color', function(req, res) {
     });
 });
 
+//team stats
+app.get('/team_stats', function(req, res) {
+	res.render('pages/team_stats',{
+		my_title:"Team Stats Page"
+	});
+});
+
 
 app.listen(3000);
 console.log('3000 is the magic port');
