@@ -188,9 +188,29 @@ app.post('/home/pick_color', function(req, res) {
 //team stats
 app.get('/team_stats', function(req, res) {
 	res.render('pages/team_stats',{
-		my_title:"Team Stats Page"
+		title:"Team Stats Page"
 	});
-});
+
+var query = 'select * from football_games;';
+db.task('get_evertyhing',task => {
+        return task.batch([
+          task.any(query)]);
+    })
+    .then(data => {
+        res.render('pages/team_stats',{
+          title:'Team Stats Page',
+          row: data[0]
+        })
+    })
+
+    .catch(err => {
+      console.log('error',err);
+      response.render('pages/team_stats'{
+        title:'Team Stats Page',
+        roe: ''
+      })
+    });
+  });
 
 
 app.listen(3000);
