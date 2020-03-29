@@ -199,7 +199,7 @@ db.task('get_evertyhing',task => {
     .then(data => {
         res.render('pages/team_stats',{
           title:'Team Stats Page',
-          row: data[0]
+          row: 'data[0]''
         })
     })
 
@@ -207,9 +207,9 @@ db.task('get_evertyhing',task => {
       console.log('error',err);
       response.render('pages/team_stats'{
         title:'Team Stats Page',
-        roe: ''
+        row: ''
       })
-    })
+    });
   });
 
 
