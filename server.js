@@ -226,15 +226,15 @@ app.get('/player_info',function(req,res){
 
 app.get('/player_info/select_player',function(req,res){
   var info = req.query.player_choice;
-  var playerin = 'select id,name from football_players;';
-  var playerad = "select * from football_players where name= '"+info+"';";
-  var playertot = "select count(*) from football_games where (select id from football_players where name = '"+info+"')= any(players);";
+  var playeri = 'select id,name from football_players;';
+  var playerd = "select * from football_players where name= '"+info+"';";
+  var playerg = "select count(*) from football_games where (select id from football_players where name = '"+info+"')= any(players);";
 
   db.task('get-everything', task=> {
     return task.batch([
-      task.any(playerin),
-      task.any(playerad),
-      task.any(playertot)
+      task.any(playeri),
+      task.any(playerd),
+      task.any(playerg)
     ]);
   })
    .then(data => {
