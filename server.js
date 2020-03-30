@@ -188,7 +188,7 @@ app.post('/home/pick_color', function(req, res) {
 //team stats
 app.get('/team_stats', function(req, res) {
 	res.render('pages/team_stats',{
-		title:"Team Stats Page"
+		my_title:"Team Stats Page"
 	});
 
 var query = 'select * from football_games;';
@@ -198,7 +198,7 @@ db.task('get_evertyhing',task => {
     })
     .then(data => {
         res.render('pages/team_stats',{
-          title:'Team Stats Page',
+          my_title:'Team Stats Page',
           row: data[0]
         })
     })
@@ -206,7 +206,7 @@ db.task('get_evertyhing',task => {
     .catch(err => {
       console.log('error',err);
         response.render('pages/team_stats',{
-        title:'Team Stats Page',
+        my_title:'Team Stats Page',
         row: ''
       })
     });
