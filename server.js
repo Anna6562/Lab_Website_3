@@ -187,7 +187,7 @@ app.post('/home/pick_color', function(req, res) {
 
 //team stats
 app.get('/team_stats', function(req, res) {
-	
+
 
 var query = 'select * from football_games;';
 db.task('get_evertyhing',task => {
@@ -210,6 +210,51 @@ db.task('get_evertyhing',task => {
     });
   });
 
+  //player info pages
+app.get('/player_info',function(req,res){
+  var playeri = 'select id,name from football_players;';
+  db.any(playeri)
+  .then(function(rows){
+    res.render('pages/player_info',{
+      my_title: 'Player Info Page',
+      playeri:'',
+      playerd:'',
+      playerg:''
+    })
+  })
+});
+
+app.get('/player_info/select_player',function(req,res){
+  var info = req.query.player_choice;
+  var playerin = 'select id,name from football_players;';
+  var playerad = 'select * from football_players where name= '"+info+"';';
+  var playertot = 'select count(*) from football_games where (select id from football_players where name = '"+info+"')= any(players);';
+
+  db.task('get-everything', task=> {
+    return task.batch([
+      task.any(playerin),
+      task.any(playerad),
+      task.any(playertot)
+    ]);
+  })
+   .then(data => {
+     res.render('pages/player_info',{
+       my_title: 'Player Info Page',
+       playeri: data[0],
+       playerd: data[1][0],
+       playerg: data[2][0].count
+     })
+   })
+   .catch(err => {
+     console.log('error',err);
+       response.render('pages/player_info',{
+       my_title:'Team Stats Page',
+       playeri: '',
+       playerd: '',
+       playerg: ''
+     })
+   });
+});
 
 app.listen(3000);
 console.log('3000 is the magic port');
