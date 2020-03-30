@@ -233,7 +233,7 @@ app.get('/player_info',function(req,res){
   });
 });
 
-app.get('/player_info/select_player',function(req,res){
+app.post('/player_info/select_player',function(req,res){
   var info = req.query.player_choice;
   var playerq1 = 'select id,name from football_players;';
   var playerq2 = "select * from football_players where name= '"+info+"';";
