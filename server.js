@@ -233,7 +233,7 @@ app.get('/player_info',function(req,res){
   });
 });
 
-app.post('/player_info/select_player',function(req,res){
+app.get('/player_info/select_player',function(req,res){
   var info = req.query.player_choice;
   var playerq1 = 'select id,name from football_players;';
   var playerq2 = "select * from football_players where name= '"+info+"';";
@@ -264,6 +264,38 @@ app.post('/player_info/select_player',function(req,res){
      })
    });
 });
+
+app.post('/home/player_info/select_player', function(req, res) {
+  var info = req.query.player_choice;
+  var playerq1 = 'select id,name from football_players;';
+  var playerq2 = "select * from football_players where name= '"+info+"';";
+  var playerq3 = "select count(*) from football_games where (select id from football_players where name = '"+info+"')= any(players);";
+
+  db.task('get-everything', task=> {
+    return task.batch([
+      task.any(playerq1),
+      task.any(playerq2),
+      task.any(playerq3)
+    ]);
+  })
+    .then(data => {
+      res.render('pages/player_info',{
+        my_title: 'Player Info Page',
+        playeri: data[0],
+        playerd: data[1][0],
+        playerg: data[2][0].count
+      })
+    })
+    .catch(err => {
+      console.log('error',err);
+        response.render('pages/player_info',{
+        my_title:'Team Stats Page',
+        playeri: '',
+        playerd: '',
+        playerg: ''
+      })
+    });
+ });
 
 app.listen(3000);
 console.log('3000 is the magic port');
