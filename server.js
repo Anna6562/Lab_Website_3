@@ -217,24 +217,33 @@ app.get('/player_info',function(req,res){
   .then(function(rows){
     res.render('pages/player_info',{
       my_title: 'Player Info Page',
-      playeri:'',
+      playeri: rows,
       playerd:'',
       playerg:''
     })
   })
+  .catch(err => {
+    console.log('error',err);
+      response.render('pages/player_info',{
+      my_title:'Team Stats Page',
+      playeri: '',
+      playerd: '',
+      playerg: ''
+    })
+  });
 });
 
 app.get('/player_info/select_player',function(req,res){
   var info = req.query.player_choice;
-  var playeri = 'select id,name from football_players;';
-  var playerd = "select * from football_players where name= '"+info+"';";
-  var playerg = "select count(*) from football_games where (select id from football_players where name = '"+info+"')= any(players);";
+  var playerq1 = 'select id,name from football_players;';
+  var playerq2 = "select * from football_players where name= '"+info+"';";
+  var playerq3 = "select count(*) from football_games where (select id from football_players where name = '"+info+"')= any(players);";
 
   db.task('get-everything', task=> {
     return task.batch([
-      task.any(playeri),
-      task.any(playerd),
-      task.any(playerg)
+      task.any(playerq1),
+      task.any(playerq2),
+      task.any(playerq3)
     ]);
   })
    .then(data => {
