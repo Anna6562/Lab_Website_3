@@ -205,11 +205,11 @@ db.task('get_evertyhing',task => {
 
     .catch(err => {
       console.log('error',err);
-        response.render('pages/team_stats'{
+        response.render('pages/team_stats',{
         title:'Team Stats Page',
         row: ''
       })
-    }));
+    });
   });
 
 
