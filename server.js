@@ -209,7 +209,7 @@ db.task('get_evertyhing',task => {
         title:'Team Stats Page',
         row: ''
       })
-    })
+    }));
   });
 
 
